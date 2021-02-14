@@ -17,7 +17,7 @@ import "./index.scss";
 
 const api = {
   key: "58c43ddcca9340062dfd34d409cdda4c",
-  base: "http://api.openweathermap.org/data/2.5",
+  base: "http://api.openweathermap.org/data/2.5/weather",
 };
 
 const CssTextField = withStyles({
@@ -52,13 +52,11 @@ function App() {
     setLoader(true);
     try {
       await axios
-        .get(
-          `${api.base}/weather?q=${query}&lang=es&units=metric&APPID=${api.key}`
-        )
+        .get(`${api.base}?q=${query}&lang=es&units=metric&APPID=${api.key}`)
         .then((res) => {
           setWeather(res.data);
         })
-        .catch((error) => {
+        .catch(() => {
           setTimeout(() => setLoader(false), 2000);
         })
         .finally(() => {
@@ -96,7 +94,7 @@ function App() {
       <div
         className={
           moment(Date.now()).format("HH") < 18
-            ? (weather && (weather.main.temp > 15 ? "cold hot" : "cold"))
+            ? weather && (weather.main.temp > 15 ? "cold hot" : "cold")
             : "cold night"
         }
       >
