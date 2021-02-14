@@ -17,7 +17,7 @@ import "./index.scss";
 
 const api = {
   key: "58c43ddcca9340062dfd34d409cdda4c",
-  base: "http://api.openweathermap.org/data/2.5/weather",
+  base: "https://api.openweathermap.org/data/2.5/weather",
 };
 
 const CssTextField = withStyles({
@@ -91,86 +91,92 @@ function App() {
           Cargando...
         </Typography>
       </Backdrop>
-      <div
-        className={
-          moment(Date.now()).format("HH") < 18
-            ? weather && (weather.main.temp > 15 ? "cold hot" : "cold")
-            : "cold night"
-        }
-      >
-        <main>
-          <div className="search-box">
-            <CssTextField
-              label="Buscar..."
-              className="search"
-              variant="outlined"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              style={{ margin: "0 10px" }}
-            />
-            <IconButton
-              onClick={() => {
-                _search();
-              }}
-              style={{
-                position: "absolute",
-                right: "60px",
-                marginRight: "-50px",
-                color: "white",
-                height: "56px",
-              }}
-            >
-              <SearchIcon />
-            </IconButton>
-          </div>
-          <div className="location-box">
-            {weather && (
-              <div className="location">
-                {weather.name}, {weather.sys.country}
-              </div>
-            )}
-            <div className="date">
-              {moment(Date.now()).format("dddd D MMMM YYYY")}
+      {weather ? (
+        <div
+          className={
+            moment(Date.now()).format("HH") < 18
+              ? weather && (weather.main.temp > 15 ? "cold hot" : "cold")
+              : "cold night"
+          }
+        >
+          <main>
+            <div className="search-box">
+              <CssTextField
+                label="Buscar..."
+                className="search"
+                variant="outlined"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                style={{ margin: "0 10px" }}
+              />
+              <IconButton
+                onClick={() => {
+                  _search();
+                }}
+                style={{
+                  position: "absolute",
+                  right: "60px",
+                  marginRight: "-50px",
+                  color: "white",
+                  height: "56px",
+                }}
+              >
+                <SearchIcon />
+              </IconButton>
             </div>
-          </div>
-          <div className="weather-box">
-            {weather && (
-              <div className="temp">
-                {Math.round(weather.main.temp)}°c
-                <div>
-                  <p>Min {Math.round(weather.main.temp_min)}°c</p>
-                  <p>Max {Math.round(weather.main.temp_max)}°c</p>
+            <div className="location-box">
+              {weather && (
+                <div className="location">
+                  {weather.name}, {weather.sys.country}
                 </div>
+              )}
+              <div className="date">
+                {moment(Date.now()).format("dddd D MMMM YYYY")}
               </div>
-            )}
-            {weather && (
-              <div className="weather">
-                {weather.weather[0].description}
-                <div>
-                  <Chip
-                    label={`Humedad al ${Math.round(weather.main.humidity)}%`}
-                    variant="outlined"
-                    style={{
-                      border: "1px solid white",
-                      color: "white",
-                      margin: 2,
-                    }}
-                  />
-                  <Chip
-                    label={`Viento ${weather.wind.speed} m/s`}
-                    variant="outlined"
-                    style={{
-                      border: "1px solid white",
-                      color: "white",
-                      margin: 2,
-                    }}
-                  />
+            </div>
+            <div className="weather-box">
+              {weather && (
+                <div className="temp">
+                  {Math.round(weather.main.temp)}°c
+                  <div>
+                    <p>Min {Math.round(weather.main.temp_min)}°c</p>
+                    <p>Max {Math.round(weather.main.temp_max)}°c</p>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        </main>
-      </div>
+              )}
+              {weather && (
+                <div className="weather">
+                  {weather.weather[0].description}
+                  <div>
+                    <Chip
+                      label={`Humedad al ${Math.round(weather.main.humidity)}%`}
+                      variant="outlined"
+                      style={{
+                        border: "1px solid white",
+                        color: "white",
+                        margin: 2,
+                      }}
+                    />
+                    <Chip
+                      label={`Viento ${weather.wind.speed} m/s`}
+                      variant="outlined"
+                      style={{
+                        border: "1px solid white",
+                        color: "white",
+                        margin: 2,
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </main>
+        </div>
+      ) : (
+        <div className="empty">
+          <img src="/empty_view.gif" />
+        </div>
+      )}
     </>
   );
 }
